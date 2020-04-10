@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ctt.mapper.SysFileMapper">
+
+    <insert id="saveFile" parameterType="com.alibaba.fastjson.JSONObject">
+        insert into sys_file(fileKey,filePkey,fileLevel,fileEnded,fileName,fileProperty,fileExt,fileSize,fileIcon,filePath,createTime,modifyTime)
+        values (#{json.fileKey},#{json.filePkey},#{json.fileLevel},#{json.fileEnded},#{json.fileName},#{json.fileProperty},#{json.fileExt},#{json.fileSize},#{json.fileIcon},#{json.filePath},now(),now())
+    </insert>
+
+    <select id="getFileList" resultType="com.alibaba.fastjson.JSONObject">
+        select * from sys_file
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="filePkey == ''">
+                AND fileLevel = 1
+            </if>
+            <if test="filePkey != null and filePkey != ''">
+                AND filePkey = #{filePkey}
+            </if>
+            <if test="fileKey != null and fileKey != ''">
+                AND fileKey = #{fileKey}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getFileByID" resultType="com.alibaba.fastjson.JSONObject">
+        select * from sys_file where fileKey = #{fileKey}
+    </select>
+</mapper>
